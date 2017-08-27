@@ -1,0 +1,28 @@
+--- a/example/simple_test.sh
++++ b/example/simple_test.sh
+@@ -9,6 +9,9 @@
+ elif [ -f "../build/bin/simka" ]
+ then
+  bindir="../build/bin"
++elif [ -f "/usr/bin/simka" ]
++then
++ bindir="/usr/bin"
+ else
+  echo "could not find a compiled simka binary"
+  exit 1
+--- a/scripts/simkaMin/simkaMin_pipeline.py
++++ b/scripts/simkaMin/simkaMin_pipeline.py
+@@ -1,4 +1,4 @@
+-
++#!/usr/bin/env python3
+ #python create_heatmaps.py matrixFolder simkaRscriptFolder
+ import os
+ from os import listdir
+--- a/scripts/visualization/run-visualization.py
++++ b/scripts/visualization/run-visualization.py
+@@ -1,4 +1,4 @@
+-
++#!/usr/bin/env python3
+ #python create_heatmaps.py matrixFolder simkaRscriptFolder
+ import os
+ from os import listdir

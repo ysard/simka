@@ -1,0 +1,56 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -42,14 +42,14 @@
+  SET (GATB_CORE_EXCLUDE_EXAMPLES  1)
+ 
+ # GATB CORE
+-include (GatbCore)
++find_package(gatbcore 1.3.0)
+ 
+ ################################################################################
+ # TOOL
+ ################################################################################
+ 
+ # we get compilation definitions from the gatb-core part
+-add_definitions (${gatb-core-flags})
++add_definitions (${GATBCORE_DEFINITIONS})
+ 
+ # we add a new compilation variable
+ if (PRINTALL)
+@@ -60,10 +60,10 @@
+ #       - from project source
+ #       - from GATB-CORE source
+ #       - from simka source
+-include_directories (include ${gatb-core-includes} ${PROJECT_SOURCE_DIR}/src/core ${PROJECT_SOURCE_DIR}/src/minikc ${PROJECT_SOURCE_DIR}/src)
++include_directories (include ${GATBCORE_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR}/src/core ${PROJECT_SOURCE_DIR}/src/minikc ${PROJECT_SOURCE_DIR}/src)
+ 
+ # we generate one file per template specialization
+-FOREACH (KSIZE ${gatb-core-klist})
++FOREACH (KSIZE ${GATBCORE_KLIST})
+     configure_file (
+         ${PROJECT_SOURCE_DIR}/src/core/SimkaAlgorithmTemplate.cpp.in
+         ${PROJECT_BINARY_DIR}/src/core/template/SimkaAlgorithmTemplate_${KSIZE}.cpp
+@@ -78,18 +78,18 @@
+ set(PROJECT_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/bin)
+ 
+ add_executable        (simka  src/SimkaPotara.cpp ${ProjectFiles})
+-target_link_libraries (simka  ${gatb-core-libraries})
++target_link_libraries (simka  ${GATBCORE_LIBRARIES})
+ 
+ add_executable        (simkaCountProcess  src/minikc/SimkaCountProcess.cpp ${ProjectFiles})
+-target_link_libraries (simkaCountProcess  ${gatb-core-libraries})
++target_link_libraries (simkaCountProcess  ${GATBCORE_LIBRARIES})
+ add_executable        (simkaCount  src/SimkaCount.cpp ${ProjectFiles})
+-target_link_libraries (simkaCount  ${gatb-core-libraries})
++target_link_libraries (simkaCount  ${GATBCORE_LIBRARIES})
+ 
+ add_executable        (simkaMerge  src/SimkaMerge.cpp ${ProjectFiles})
+-target_link_libraries (simkaMerge  ${gatb-core-libraries})
++target_link_libraries (simkaMerge  ${GATBCORE_LIBRARIES})
+ 
+ add_executable        (simkaMin  src/simkaMin/SimkaMin.cpp ${SimkaMinFiles})
+-target_link_libraries (simkaMin  ${gatb-core-libraries})
++target_link_libraries (simkaMin  ${GATBCORE_LIBRARIES} pthread)
+ 
+ ################################################################################
+ #  PACKAGING

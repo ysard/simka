@@ -1,0 +1,3 @@
+link_to_libgatbcore.patch
+remove_unwanted_files_from_release.patch
+make_share_files_comaptible_with_system_packaging.patch

@@ -1,0 +1,19 @@
+Source: simka
+Section: science
+Priority: optional
+Maintainer: Pierre Vignet <pierre.vignet.contact@caramail.fr>
+Build-Depends: debhelper (>= 9), cmake
+Standards-Version: 3.9.5
+Homepage: https://github.com/GATB/simka
+#Vcs-Git: git://anonscm.debian.org/collab-maint/simka.git
+#Vcs-Browser: http://anonscm.debian.org/?p=collab-maint/simka.git;a=summary
+
+Package: simka
+Architecture: any
+Depends: ${python3:Depends}, ${shlibs:Depends}, ${misc:Depends}
+Description: Comparative metagenomics method dedicated to NGS datasets
+ Simka is a de novo comparative metagenomics tool. Simka represents each 
+ dataset as a k-mer spectrum and compute several classical ecological 
+ distances between them.
+ .
+ Full documentation is at https://gatb.inria.fr/software/simka/

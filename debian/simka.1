@@ -1,0 +1,138 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.\" (C) Copyright 2017 Pierre Vignet <pierre.vignet.contact@caramail.fr>,
+.\"
+.\" First parameter, NAME, should be all caps
+.\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
+.\" other parameters are allowed: see man(7), man(1)
+.TH SIMKA 1 "July 21, 2017"
+.\" Please adjust this date whenever revising the manpage.
+.\"
+.\" Some roff macros, for reference:
+.\" .nh        disable hyphenation
+.\" .hy        enable hyphenation
+.\" .ad l      left justify
+.\" .ad b      justify to both left and right margins
+.\" .nf        disable filling
+.\" .fi        enable filling
+.\" .br        insert line break
+.\" .sp <n>    insert n+1 empty lines
+.\" for manpage-specific macros, see man(7)
+.SH NAME
+simka \- a comparative metagenomics method dedicated to NGS datasets. 
+
+.SH DESCRIPTION
+Simka is a de novo comparative metagenomics tool. 
+Simka represents each dataset as a k\-mer spectrum and compute several classical ecological
+distances between them.
+.br
+Simka computes several classical ecological distances between N (metagenomic) read sets based on k\-mer counts. 
+Simka is implemented with the GATB library (http://gatb.inria.fr/).
+
+TODO: add full description from github
+
+.SH OPTIONS
+TODO
+
+.SH EXAMPLES
+Run the toy example:
+.PP
+.RS
+simka \-in example/simka_input.txt \-out results \-out\-tmp temp_output
+.RE
+.PP
+Compute all the distances that Simka can provide (Bray\-Curtis, Jensen\-Shannon…):
+.PP
+.RS
+simka … \-simple\-dist \-complex\-dist
+.RE
+.PP
+Change the kmer size
+.PP
+.RS
+simka … \-kmer\-size 31
+.RE
+.PP
+Filter kmers seen one time (potentially erroneous) and very high abundance kmers (potentially contaminants):
+.PP
+.RS
+simka … \-abundance\-min 2 \-abundance\-max 200
+.RE
+.PP
+Filter over the sequences of the reads and k\-mers:
+Minimum read size of 90. Discards low complexity reads and k\-mers (shannon index < 1.5)
+.PP
+.RS
+simka … \-min\-read\-size 90 \-read\-shannon\-index 1.5 \-kmer\-shannon\-index 1.5
+.RE
+.PP
+Consider a subset of the reads of the input dataset (for dataset with non\-uniform reads per sample):
+Considers all the reads of each samples (default)
+.PP
+.RS
+simka … \-max\-reads \-1
+.RE
+.PP
+Let Simka compute automatically the maximum of read per samples (normalization)
+.PP
+.RS
+simka … \-max\-reads 0
+.RE
+.PP
+Used only the first 1000 reads of each samples:
+.PP
+.RS
+simka … \-max\-reads 1000
+.RE
+.PP
+Allow more memory and cores improve the execution time:
+.PP
+.RS
+simka … \-max\-memory 20000 \-nb\-cores 8
+.RE
+.PP
+
+
+.BI "Computer cluster options"
+
+Simka can be ran on computer cluster equipped of a job scheduling system such as SGE. 
+Giving a job file template and a submission command, Simka will take care of creating 
+and synchronizing the jobs until the end of the execution.
+
+You must provide the filenames to two job templates, one for counting and one for 
+merging (\-count\-file \-count\-merge).
+
+There are example of file templates in the folder ‘example/potara_job’.
+
+And you must provide a submission command for both job (\-count\-cmd \-merge\-cmd)
+
+Example for SGE:
+.PP
+.RS
+\-count\-cmd ‘qsub  \-pe make 8’ \-merge\-cmd qsub
+.RE
+.PP
+The option \-max\-count and \-max\-merge controls the maximum of simultaneous jobs. 
+They have to be fixed if you system have a maximum of jobs restriction.
+
+Command example:
+.PP
+.RS
+simka … \-count\-file example/potara_job/sge/job_count \-merge\-file example/potara_job/sge/job_merge \
+\-count\-cmd qsub \-pe make 34 \-merge\-cmd qsub \
+\-max\-count 6 \-max\-merge 18 \-nb\-cores 200 \-max\-memory 500000
+.RE
+.PP
+Simka will run a maximum of 6 simultaneous counting jobs, each using 200/6 cores and
+500000/6 MB of memory. Simka will run a maximum of 18 merging jobs. 
+A merging job can not be ran on more than 1 core and use very low memory. 
+By default Simka use \-nb\-cores/2 counting jobs simultaneously and \-nb\-cores merging jobs simultaneously.
+
+.SH "SEE ALSO"
+.BR simka (1)
+.br
+The programs are documented fully by the Genscale Team
+available at https://github.com/GATB/simka
+
+.SH AUTHORS
+This manual page was written by Pierre Vignet <pierre.vignet.contact@caramail.fr>
+for the Debian project (and may be used by others).

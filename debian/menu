@@ -1,0 +1,2 @@
+?package(simka):needs="text" section="Applications/Science/Biology"\
+  title="simka" command="/usr/bin/simka"
